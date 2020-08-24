@@ -13,11 +13,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }}
     env:
-      ACE_ROOT: ${{ github.workspace }}/ACE
-      TAO_ROOT: ${{ github.workspace }}/TAO
+      ACE_ROOT: ${{ github.workspace }}/FOO/ACE
+      TAO_ROOT: ${{ github.workspace }}/FOO/TAO
     steps:
-    - name: checkout ACE/TAO
+    - name: checkout ACE
       uses: actions/checkout@v2
+      with:
+        repository: DOCGroup/ACE_TAO
+        path: FOO
     - name: create $ACE_ROOT/ace/config.h
       run: |
         '#include "ace/config-linux.h"' > ${env:ACE_ROOT}/ace/config.h
