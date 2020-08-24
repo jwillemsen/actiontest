@@ -9,36 +9,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - CC: clang-9
-            CXX: clang++-9
-            PackageDeps: clang-9
-            Repo: llvm-toolchain-$(lsb_release -cs)-9
-            platform_file: include $(ACE_ROOT)/include/makeinclude/platform_linux_clang.GNU
-            os: ubuntu-20.04
-          - CC: gcc-10
-            CXX: g++-10
-            PackageDeps: g++-10
-            platform_file: include $(ACE_ROOT)/include/makeinclude/platform_linux.GNU
-            os: ubuntu-20.04
+          - os: ubuntu-20.04
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.os }} ${{ matrix.CXX }}
+    name: ${{ matrix.os }}
     env:
       ACE_ROOT: ${{ github.workspace }}/ACE
       TAO_ROOT: ${{ github.workspace }}/TAO
-      CC: ${{ matrix.CC }}
-      CXX: ${{ matrix.CXX }}
     steps:
     - name: checkout ACE/TAO
       uses: actions/checkout@v2
-    - name: Add Repo
-      run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-        sudo apt-add-repository "deb http://apt.llvm.org/$(lsb_release -cs)/ ${{ matrix.Repo }} main"
-      if: matrix.Repo != ''
-    - name: Add packages
-      run: |
-        sudo apt-get --yes update
-        sudo apt-get --yes install libxerces-c-dev libssl-dev ${{ matrix.PackageDeps }}
     - name: create $ACE_ROOT/ace/config.h
       run: |
         '#include "ace/config-linux.h"' > ${env:ACE_ROOT}/ace/config.h
