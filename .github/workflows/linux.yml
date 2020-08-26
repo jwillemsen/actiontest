@@ -10,19 +10,13 @@ jobs:
       matrix:
         include:
           - os: ubuntu-18.04
-          - os: ubuntu-20.04
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }}
     env:
-      ACE_ROOT: ${{ github.workspace }}/FOO/ACE
-      TAO_ROOT: ${{ github.workspace }}/FOO/TAO
+      DOC_ROOT: ${{ github.workspace }}/FOO/ACE
     steps:
-    - name: checkout ACE
+    - name: checkout ACE_TAO
       uses: actions/checkout@v2
       with:
         repository: DOCGroup/ACE_TAO
-        path: ${env:ACE_ROOT}
-    - name: create $ACE_ROOT/ace/config.h
-      run: |
-        '#include "ace/config-linux.h"' > ${env:ACE_ROOT}/ace/config.h
-      shell: pwsh
+        path: ${env:DOC_ROOT}
